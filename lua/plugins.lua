@@ -167,6 +167,7 @@ function M.setup()
             end,
         }
 
+        -- Debugging
         use {
             "mfussenegger/nvim-dap",
             event = "BufReadPre",
@@ -205,6 +206,17 @@ function M.setup()
             config = function()
                 require("config.neotest").setup()
             end,
+        }
+
+        -- Auto pairs
+        use {
+            "windwp/nvim-autopairs",
+            opt = true,
+            event = "InsertEnter",
+            module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
+            config = function()
+                require("config.autopairs").setup()
+            end
         }
 
         -- Task runner
@@ -314,6 +326,9 @@ function M.setup()
                 require("sidebar-nvim").setup { open = false }
             end,
         }
+
+        -- R
+        use { "jalvesaq/Nvim-R" }
 
         -- Install plugins in fresh installment.
         if packer_bootstrap then

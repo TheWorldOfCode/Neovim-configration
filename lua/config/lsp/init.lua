@@ -30,6 +30,7 @@ local servers = {
   bashls = {},
   dockerls = {},
   cmake = {},
+  r_language_server = {}
 }
 
 -- Use an on_attach function to only map the following keys
