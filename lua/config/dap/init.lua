@@ -36,6 +36,7 @@ local function configure_exts()
     require("nvim-dap-virtual-text").setup {
         commented = true,
     }
+    local dap, dapui = require "dap", require "dapui"
     dapui.setup {
         expand_lines = true,
         icons = { expanded = "", collapsed = "", circular = "" },
