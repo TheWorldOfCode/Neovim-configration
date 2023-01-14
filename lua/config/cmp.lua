@@ -26,7 +26,7 @@ function M.setup()
 
 
     cmp.setup  {
-        completion = { completeopt = "menu,menuone,noinsert", keyword_length = 1} 
+        completion = { completeopt = "menu,menuone,noinsert,noselect", keyword_length = 1},
 
         sorting = {
             priority_weight = 2,

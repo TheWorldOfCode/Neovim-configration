@@ -1,14 +1,7 @@
 local M = {}
 
 -- List of plugins to configure
--- dap
--- lspconfig
--- neogen
--- neotest
 -- Vimwiki
--- git plugin
--- nvim-navic
--- cmp
 
 function M.setup()
 
@@ -46,6 +39,27 @@ function M.setup()
         -- Packer manager
         use 'wbthomason/packer.nvim'
 
+        -- Colorschemes
+        use {
+            "sainnhe/everforest",
+            config = function()
+                vim.g.everforest_better_performance = 1
+                vim.cmd.colorscheme [[everforest]]
+            end,
+            disable = false,
+        }
+
+        -- Which key (Menu for keybinding)
+        use {
+            "folke/which-key.nvim",
+            event = "VimEnter",
+            config = function()
+                vim.o.timeout = true
+                vim.o.timeoutlen = 100
+                require("config.whichkey").setup()
+            end,
+        }
+
         -- Statusline
         use {
             'nvim-lualine/lualine.nvim',
@@ -56,7 +70,7 @@ function M.setup()
                         require("nvim-web-devicons").setup { default = true}
                     end
                 }
-        },
+            },
             config = function()
                 require("config.lualine").setup()
             end
@@ -76,7 +90,10 @@ function M.setup()
             event = "VimEnter",
             config = function()
                 require("config.noice").setup()
-            end
+            end,
+            requires = {
+                "MunifTanjim/nui.nvim"
+            }
         }
 
         -- Search projects
@@ -94,16 +111,6 @@ function M.setup()
             end
         }
 
-        -- Which key (Menu for keybinding)
-        use {
-            "folke/which-key.nvim",
-            event = "VimEnter",
-            config = function()
-                vim.o.timeout = true
-                vim.o.timeoutlen = 300
-                require("config.whichkey").setup()
-            end,
-        }
         -- Better syntax
         use {
             'nvim-treesitter/nvim-treesitter',
@@ -113,33 +120,130 @@ function M.setup()
         }
 
         -- Easy setup of LSP
-        use 'neovim/nvim-lspconfig'
-
-        -- Code location
         use {
-            "SmiteshP/nvim-navic",
-            requires = "neovim/nvim-lspconfig"
+            'neovim/nvim-lspconfig',
+            requires = {
+                "williamboman/mason.nvim",
+                "williamboman/mason-lspconfig.nvim",
+                "WhoIsSethDaniel/mason-tool-installer.nvim",
+                { "jayp0521/mason-null-ls.nvim" },
+                "folke/neodev.nvim",
+                "RRethy/vim-illuminate",
+                "jose-elias-alvarez/null-ls.nvim",
+                {
+                    "j-hui/fidget.nvim",
+                    config = function()
+                        require("fidget").setup {}
+                    end,
+                },
+                { "b0o/schemastore.nvim", module = { "schemastore" } },
+                { "jose-elias-alvarez/typescript.nvim", module = { "typescript" } },
+                {
+                    "SmiteshP/nvim-navic",
+                    -- "alpha2phi/nvim-navic",
+                    config = function()
+                        require("nvim-navic").setup {}
+                    end,
+                    module = { "nvim-navic" },
+                },
+                {
+                    "simrat39/inlay-hints.nvim",
+                    config = function()
+                        require("inlay-hints").setup()
+                    end,
+                },
+            },
+        }
+
+        -- trouble.nvim
+        use {
+            "folke/trouble.nvim",
+            cmd = { "TroubleToggle", "Trouble" },
+            module = { "trouble.providers.telescope" },
+            config = function()
+                require("trouble").setup {
+                    use_diagnostic_signs = true,
+                }
+            end,
         }
 
         use {
             "mfussenegger/nvim-dap",
             event = "BufReadPre",
             module = { "dap" },
-            wants = { "nvim-dap-virtual-text", "nvim-dap-ui", "which-key.nvim" },
             requires = {
-                "theHamsta/nvim-dap-virtual-text",
-                "rcarriga/nvim-dap-ui",
+                {"theHamsta/nvim-dap-virtual-text", module = { "nvim-dap-virtual-text" } },
+                {"rcarriga/nvim-dap-ui", module = { "dapui" } },
                 "nvim-telescope/telescope-dap.nvim",
+                {"mfussernegger/nvim-dap-python", module = { 'dap-python'}},
+
+
             },
             config = function()
                 require("config.dap").setup()
             end,
         }
 
+        -- Testing
+        use {
+            "nvim-neotest/neotest",
+            requires = {
+                {
+                    "vim-test/vim-test",
+                    event = { "BufReadPre" },
+                    config = function()
+                        require("config.test").setup()
+                    end
+                },
+                "nvim-lua/plenary.nvim",
+                "nvim-neotest/neotest-vim-test",
+                "nvim-treesitter/nvim-treesitter",
+                { "nvim-neotest/neotest-python", module = {"neotest-python"}},
+            },
+            module = { "neotest", "neotest.async" },
+            config = function()
+                require("config.neotest").setup()
+            end,
+        }
+
+        -- Task runner
+        use {
+            "stevearc/overseer.nvim",
+            opt = true,
+            module = { "neotest.consumers.overseer" },
+            cmd = {
+                "OverseerToggle",
+                "OverseerOpen",
+                "OverseerRun",
+                "OverseerBuild",
+                "OverseerClose",
+                "OverseerLoadBundle",
+                "OverseerSaveBundle",
+                "OverseerDeleteBundle",
+                "OverseerRunCmd",
+                "OverseerQuickAction",
+                "OverseerTaskAction",
+            },
+            config = function()
+                require("overseer").setup()
+            end,
+        }
+
+        -- Code documentation
+        use {
+            "danymat/neogen", 
+            config = function()
+                require("config.neogen").setup()
+            end,
+            cmd = { "Neogen" }, 
+            module = "neogen",
+        }
+
         -- Autocompletion 
         use {
             'hrsh7th/nvim-cmp',
-            --       event = "InsertEnter",
+            event = "InsertEnter",
+            opt = true,
             config = function()
                 require("config.cmp").setup()
             end,
@@ -166,11 +270,49 @@ function M.setup()
         }
 
 
-        -- For ultisnips users.
-        --    use 'SirVer/ultisnips'
-        --    use 'quangnguyen30192/cmp-nvim-ultisnips'
-        --    vim.g["g:UltiSnipsSnippetDirectories"] = {"snippets"}
+        -- git
+        use {
+            "TimUntersberger/neogit",
+            cmd = "Neogit",
+            module = {"neogit"},
+            config = function()
+                require("config.neogit").setup()
+            end
+        }
 
+        use {
+            "lewis6991/gitsigns.nvim",
+            event = "BufReadPre",
+            requires = { "nvim-lua/plenary.nvim" },
+            config = function()
+                require("config.gitsigns").setup()
+            end,
+        }
+
+        use {
+            "akinsho/git-conflict.nvim",
+            cmd = {
+                "GitConflictChooseTheirs",
+                "GitConflictChooseOurs",
+                "GitConflictChooseBoth",
+                "GitConflictChooseNone",
+                "GitConflictNextConflict",
+                "GitConflictPrevConflict",
+                "GitConflictListQf",
+            },
+            config = function()
+                require("git-conflict").setup()
+            end,
+        }
+
+        -- Fancy sidebar
+        use {
+            "sidebar-nvim/sidebar.nvim",
+            cmd = { "SidebarNvimToggle" },
+            config = function()
+                require("sidebar-nvim").setup { open = false }
+            end,
+        }
 
         -- Install plugins in fresh installment.
         if packer_bootstrap then
