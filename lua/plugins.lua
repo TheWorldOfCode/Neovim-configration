@@ -175,7 +175,8 @@ function M.setup()
                 {"theHamsta/nvim-dap-virtual-text", module = { "nvim-dap-virtual-text" } },
                 {"rcarriga/nvim-dap-ui", module = { "dapui" } },
                 "nvim-telescope/telescope-dap.nvim",
-                {"mfussernegger/nvim-dap-python", module = { 'dap-python'}},
+
+                {"mfussenegger/nvim-dap-python", module = { 'dap-python'}},
 
 
             },

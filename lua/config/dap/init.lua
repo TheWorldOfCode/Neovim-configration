@@ -87,7 +87,6 @@ local function configure_exts()
         dapui.close()
     end
 end
-end
 
 local function configure_debuggers()
     require("config.dap.python").setup()
