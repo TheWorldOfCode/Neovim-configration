@@ -42,8 +42,8 @@ local function normal_keymap()
         o = {
             name = "Open",
             t = { "<cmd>Telescope", "Open Telescope<cr>" },
-            p = { "<cmd>lua require('telescope.extensions.project').project()<cr>",  "Open project view" },
-            g = { "<cmd>lua require('telescope.extensions.repo').list()<cr>", "Open repository list" }
+            p = { "<cmd>lua require('telescope').extensions.project.project()<cr>",  "Open project view" },
+            g = { "<cmd>lua require('telescope').extensions.repo.list()<cr>", "Open repository list" }
 
         }
     }

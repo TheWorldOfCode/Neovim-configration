@@ -3,7 +3,7 @@ local M = {}
 function M.setup()
 
     local npairs = require "nvim-autopairs"
-    npairs.setup() {
+    npairs.setup {
         check_ts = true
     }
 
