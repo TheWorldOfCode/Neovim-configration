@@ -14,6 +14,14 @@ function M.setup()
     notify = {
       enabled = false,
     },
+    lsp = {
+        hover = {
+            enabled = false,
+        },
+        signature ={
+            enabled = false,
+        },
+    },
   }
 end
 

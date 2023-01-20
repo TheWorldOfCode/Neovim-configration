@@ -122,6 +122,9 @@ function M.setup()
         -- Easy setup of LSP
         use {
             'neovim/nvim-lspconfig',
+            config = function()
+                require("config.lsp").setup()
+            end,
             requires = {
                 "williamboman/mason.nvim",
                 "williamboman/mason-lspconfig.nvim",
