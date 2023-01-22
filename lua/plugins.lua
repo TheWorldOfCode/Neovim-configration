@@ -143,7 +143,6 @@ function M.setup()
                 { "jose-elias-alvarez/typescript.nvim", module = { "typescript" } },
                 {
                     "SmiteshP/nvim-navic",
-                    -- "alpha2phi/nvim-navic",
                     config = function()
                         require("nvim-navic").setup {}
                     end,

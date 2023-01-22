@@ -39,11 +39,12 @@ local function keymappings(client, bufnr)
     keymap_l.l.F = { "<cmd>lua vim.lsp.buf.format({async = true})<CR>", "Format Document" }
   end
 
+
   local keymap_g = {
     name = "Goto",
-    d = { "<Cmd>lua vim.lsp.buf.definition()<CR>", "Definition" },
+    d = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Definition" },
     -- d = { "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", "Definition" },
-    D = { "<Cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
+    D = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Declaration" },
     h = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "Signature Help" },
     I = { "<cmd>Telescope lsp_implementations<CR>", "Goto Implementation" },
     b = { "<cmd>lua vim.lsp.buf.type_definition()<CR>", "Goto Type Definition" },
@@ -57,7 +58,7 @@ local function keymappings(client, bufnr)
     },
   }
 
-  local o = { buffer = bufnr, prefix = "<leader>" }
+  local o = { mode="n", buffer = bufnr, prefix = "<leader>" }
   whichkey.register(keymap_l, o)
   -- legendary.bind_whichkey(keymap_l, o, false)
 
@@ -65,7 +66,7 @@ local function keymappings(client, bufnr)
   whichkey.register(keymap_v_l, o)
   -- legendary.bind_whichkey(keymap_v_l, o, false)
 
-  o = { buffer = bufnr, prefix = "g" }
+  o = { mode = "n", buffer = bufnr, prefix = "g" }
   whichkey.register(keymap_g, o)
 end
 

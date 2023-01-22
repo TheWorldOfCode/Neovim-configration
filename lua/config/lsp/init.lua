@@ -30,14 +30,14 @@ local servers = {
   bashls = {},
   dockerls = {},
   cmake = {},
-  r_language_server = {}
+--  r_language_server = {}
 }
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+function M.on_attach(client, bufnr)
     local caps = client.server_capabilities
-
+    print("ENTER")
     -- Enable completion triggered by <C-X><C-O>
     -- See `:help omnifunc` and `:help ins-completion` for more information.
     if caps.completionProvider then
