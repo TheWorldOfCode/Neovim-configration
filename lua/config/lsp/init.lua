@@ -37,7 +37,6 @@ local servers = {
 -- after the language server attaches to the current buffer
 function M.on_attach(client, bufnr)
     local caps = client.server_capabilities
-    print("ENTER")
     -- Enable completion triggered by <C-X><C-O>
     -- See `:help omnifunc` and `:help ins-completion` for more information.
     if caps.completionProvider then
