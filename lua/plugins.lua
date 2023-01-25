@@ -119,6 +119,24 @@ function M.setup()
             end
         }
 
+        -- lspsaga.nvim
+        use {
+            "glepnir/lspsaga.nvim",
+            cmd = { "Lspsaga" },
+            config = function()
+                require("config.lspsaga").setup()
+            end,
+        }
+
+        -- renamer.nvim
+        use {
+            "filipdutescu/renamer.nvim",
+            module = { "renamer" },
+            config = function()
+                require("renamer").setup {}
+            end,
+        }
+
         -- Easy setup of LSP
         use {
             'neovim/nvim-lspconfig',
