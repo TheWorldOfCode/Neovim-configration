@@ -45,7 +45,29 @@ local function normal_keymap()
             p = { "<cmd>lua require('telescope').extensions.project.project()<cr>",  "Open project view" },
             g = { "<cmd>lua require('telescope').extensions.repo.list()<cr>", "Open repository list" }
 
-        }
+        },
+        c = {
+            name = "Code",
+            d = {"<cmd>Neogen func<Cr>", "Func Doc"},
+            D = {"<cmd>Neogen class<Cr>", "Class Doc"},
+            x = {
+                name = "Swap Next",
+                f = "Function",
+                p = "Parameter",
+                c = "Class",
+            },
+            X = {
+                name = "Swap Next",
+                f = "Function",
+                p = "Parameter",
+                c = "Class",
+            },
+
+        },
+
+        d = {
+            name = "Debug",
+        },
     }
 
     whichkey.register(keymap_file, opts)

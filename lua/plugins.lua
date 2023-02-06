@@ -53,6 +53,7 @@ function M.setup()
         use {
             "folke/which-key.nvim",
             event = "VimEnter",
+            module = {"which-key"},
             config = function()
                 vim.o.timeout = true
                 vim.o.timeoutlen = 100
@@ -190,8 +191,8 @@ function M.setup()
         -- Debugging
         use {
             "mfussenegger/nvim-dap",
-            event = "BufReadPre",
             module = { "dap" },
+            opt = true,
             requires = {
                 {"theHamsta/nvim-dap-virtual-text", module = { "nvim-dap-virtual-text" } },
                 {"rcarriga/nvim-dap-ui", module = { "dapui" } },
