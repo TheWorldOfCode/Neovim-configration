@@ -18,7 +18,7 @@ function M.setup(servers, server_options)
         auto_update = false,
         run_on_start = true,
     }
-    vim.g["test"] = "hallo"
+
     require("mason-lspconfig").setup {
         ensure_installed = vim.tbl_keys(servers),
         automatic_installation = false,

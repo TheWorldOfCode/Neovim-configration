@@ -138,6 +138,16 @@ function M.setup()
             end,
         }
 
+        -- Refactoring
+        use {
+            "ThePrimeagen/refactoring.nvim", 
+            module = { "refactoring", "telescope"},
+            keys = { [[<leader>r]]},
+            config = function()
+                require("config.refactoring").setup()
+            end,
+        }
+
         -- Easy setup of LSP
         use {
             'neovim/nvim-lspconfig',
