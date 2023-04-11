@@ -43,8 +43,8 @@ local function normal_keymap()
             name = "Open",
             t = { "<cmd>Telescope<cr>", "Open Telescope" },
             p = { "<cmd>lua require('telescope').extensions.project.project()<cr>",  "Open project view" },
-            g = { "<cmd>lua require('telescope').extensions.repo.list()<cr>", "Open repository list" }
-
+            g = { "<cmd>lua require('telescope').extensions.repo.list()<cr>", "Open repository list" },
+            f = { "<cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>", "Open file browser"},
         },
         c = {
             name = "Code",

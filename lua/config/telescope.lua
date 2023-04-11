@@ -44,12 +44,17 @@ function M.setup()
                     },
                 },
             },
+            file_browser = {
+                theme = "ivy",
+                hijack_netrw = true,
+            },
         },
     }
     )
 
     telescope.load_extension('project')
     telescope.load_extension('repo')
+    telescope.load_extension('file_browser')
 end
 
 

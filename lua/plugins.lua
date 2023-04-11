@@ -105,7 +105,8 @@ function M.setup()
                 {'BurntSushi/ripgrep'},
                 {'sharkdp/fd'},
                 {'nvim-telescope/telescope-project.nvim'},
-                {'cljoly/telescope-repo.nvim'}
+                {'cljoly/telescope-repo.nvim'},
+                {'nvim-telescope/telescope-file-browser.nvim'},
             },
             config = function() 
                 require("config.telescope").setup()
