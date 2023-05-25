@@ -94,7 +94,7 @@ function M.setup()
             end,
             requires = {
                 "MunifTanjim/nui.nvim"
-            }
+            },
         }
 
         -- Search projects
@@ -361,6 +361,12 @@ function M.setup()
 
         -- R
         use { "jalvesaq/Nvim-R" }
+
+        -- Neovim in browser
+        use { 
+    'glacambre/firenvim',
+    run = function() vim.fn['firenvim#install'](0) end 
+        }
 
         -- Install plugins in fresh installment.
         if packer_bootstrap then

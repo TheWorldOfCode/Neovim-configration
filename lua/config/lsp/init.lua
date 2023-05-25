@@ -93,6 +93,8 @@ require("config.lsp.handlers").setup()
 
 function M.setup()
     require("config.lsp.installer").setup(servers, opts)
+
+    require('lspconfig')["qmlls"].setup(opts)
 end
 
 
