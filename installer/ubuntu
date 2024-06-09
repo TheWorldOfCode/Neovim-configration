@@ -1,0 +1,60 @@
+#!/bin/bash -e
+# Install neovim and all dependiences
+
+function error() {
+    echo -e "\e[01;31m${1}\e[0m" >&2 
+}
+
+[ $(id -u) -ne 0 ] && RUN_AS_ROOT=sudo
+
+# Update package
+${RUN_AS_ROOT} apt update
+
+# Download neovim appimage 
+command -v curl /dev/null || ${RUN_AS_ROOT} apt install curl
+
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+${RUN_AS_ROOT} rm -rf /opt/nvim
+${RUN_AS_ROOT} tar -C /opt -xzf nvim-linux64.tar.gz
+rm nvim-linux64.tar.gz
+[ -f /usr/local/bin/nvim ] && ${RUN_AS_ROOT} rm /usr/local/bin/nvim
+${RUN_AS_ROOT} ln -s /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
+
+
+command  -v nvim >/dev/null || { error "Installing nvim failed"; exit 1; }
+
+# Installing extra dependency
+
+# Clipboard
+[ -z ${DISPLAY+x} ] && error "Clipboard disable" || ${RUN_AS_ROOT} apt install xclip
+
+# Install Node.js
+command -v npm 2>/dev/null || ${RUN_AS_ROOT} apt install npm
+
+npm install -g neovim
+
+# Install Perl 
+command -v perl 2>/dev/null || ${RUN_AS_ROOT} apt install perl
+#command -v cpanm 2>/dev/null || ${RUN_AS_ROOT} apt install cpanminus
+
+cpan -n Neovim::Ext
+
+
+# Install python
+if command -v python >/dev/null; then
+    [ "$(python -c \"import sys; print(sys.version_info[0] > 2 and sys.version_info[2] > 7)\")" == "True" ] || { error "Python version should be above 3.7"; exit 1; }
+
+    command -v pip3 >/dev/null || ${RUN_AS_ROOT} apt install python3-pip
+else 
+    command -v python3 >/dev/null || ${RUN_AS_ROOT} apt install python3 python3-pip
+    ln -s /usr/bin/python3 /usr/bin/python
+fi
+
+python -c "import neovim" >/dev/null 2>/dev/null || python -m pip install neovim
+
+# Install Ruby
+command -v ruby 2>/dev/null | ${RUN_AS_ROOT} apt install ruby-full
+
+gem list | grep -q neovim
+[ $? -ne 0 ] && gem install neovim
+
