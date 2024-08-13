@@ -1,0 +1,112 @@
+#!/bin/bash -e
+# Install neovim and all dependiences
+
+APT_OPTIONS="-y"
+
+function error() {
+    echo -e "\e[01;31m${1}\e[0m" >&2 
+}
+
+[ $(id -u) -ne 0 ] && RUN_AS_ROOT=sudo
+
+# Update package
+${RUN_AS_ROOT} apt update
+
+# Download neovim appimage 
+command -v curl /dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} curl
+
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+${RUN_AS_ROOT} rm -rf /opt/nvim
+${RUN_AS_ROOT} tar -C /opt -xzf nvim-linux64.tar.gz
+rm nvim-linux64.tar.gz
+[ -f /usr/local/bin/nvim ] && ${RUN_AS_ROOT} rm /usr/local/bin/nvim
+${RUN_AS_ROOT} ln -s /opt/nvim-linux64/bin/nvim /usr/local/bin/nvim
+
+
+command  -v nvim >/dev/null || { error "Installing nvim failed"; exit 1; }
+
+# Installing extra dependency
+
+# Clipboard
+[ -z ${DISPLAY+x} ] && error "Clipboard disable" || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} xclip
+
+# Install Node.js
+if ! command -v npm >/dev/null; then
+	${RUN_AS_ROOT} apt install ${APT_OPTIONS} npm
+	${RUN_AS_ROOT} npm install -g n
+	${RUN_AS_ROOT} n lts
+fi
+
+
+
+npm ls -g | grep -q neovim || ${RUN_AS_ROOT} npm install --no-fund -g neovim
+
+
+# Install Perl 
+command -v perl >/dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} perl
+#command -v cpanm 2>/dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} cpanminus
+
+#${RUN_AS_ROOT} cpan Neovim::Ext
+
+
+# Install python
+if command -v python >/dev/null; then
+#    [ "$(python -c \"import sys; print(sys.version_info[1] > 2 and sys.version_info[2] > 7)\")" == "True" ] || { error "Python version should be above 3.7"; exit 1; }
+
+    command -v pip3 >/dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} python3-pip
+else 
+    command -v python3 >/dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} python3 python3-pip
+    ${RUN_AS_ROOT} ln -s /usr/bin/python3 /usr/bin/python
+fi
+
+python -c "import neovim" >/dev/null 2>/dev/null || python -m pip install neovim
+
+# Install Ruby
+command -v ruby  || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} ruby-full
+
+${RUN_AS_ROOT} gem list | grep -q neovim || ${RUN_AS_ROOT} gem install neovim
+
+
+# Install ripgrep
+command -v rg >/dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} ripgrep
+
+
+
+# Install mason
+
+if ! command -v go >/dev/null; then
+	 if [ ! -d /usr/local/go ]; then
+		 curl -LO "https://go.dev/dl/go1.22.4.linux-amd64.tar.gz"
+		 ${RUN_AS_ROOT} tar -C /usr/local -xf go1.22.4.linux-amd64.tar.gz
+		 ${RUN_AS_ROOT} rm go1.22.4.linux-amd64.tar.gz
+	 fi
+	 ${RUN_AS_ROOT} ln -s /usr/local/go/bin/go /usr/local/bin/go 
+	 ${RUN_AS_ROOT} ln -s /usr/local/go/bin/gofmt /usr/local/bin/gofmt
+fi
+
+if ! command -v composer >/dev/null; then
+	${RUN_AS_ROOT} apt-get install php php-curl
+	${RUN_AS_ROOT} curl -sS https://getcomposer.org/installer -o composer-setup.php
+	${RUN_AS_ROOT} 	php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+	${RUN_AS_ROOT} 	composer self-update
+fi
+
+python -m venv -h 2>/dev/null >/dev/null || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} python3-venv
+
+command -v cargo || { curl https://sh.rustup.rs -sSf | sh; }
+source ~/.bashrc
+
+
+# luarocks javac java julia
+# Install Tree-sitter
+
+command -v tree-sitter >/dev/null || ${RUN_AS_ROOT} npm install -g tree-sitter-cli
+
+
+# Prepare telescope
+
+# Missing rg and fd locate
+
+command -v fd || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} fd-find
+command -v locate || ${RUN_AS_ROOT} apt install ${APT_OPTIONS} fd-find
+
