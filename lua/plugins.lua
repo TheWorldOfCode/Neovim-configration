@@ -22,8 +22,7 @@ function M.setup()
         local fn = vim.fn
         local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
         if (fn.empty(fn.glob(install_path)) > 0) then
-            packer_bootstrap = fn.system {
-                "git",
+            packer_bootstrap = fn.system { "git",
                 "clone",
                 "--depth",
                 "1",
@@ -99,7 +98,7 @@ function M.setup()
 
         -- Search projects
         use {
-            'nvim-telescope/telescope.nvim', tag = '0.1.0',
+            'nvim-telescope/telescope.nvim', tag = '0.1.6',
             requires = {
                 {'nvim-lua/plenary.nvim'},
                 {'BurntSushi/ripgrep'},
@@ -364,8 +363,15 @@ function M.setup()
 
         -- Neovim in browser
         use { 
-    'glacambre/firenvim',
-    run = function() vim.fn['firenvim#install'](0) end 
+            'glacambre/firenvim',
+            lazy = not vim.g.started_by_firenvim,
+            build = function()
+                vim.fn["firenvim#install"](0)
+            end
+        }
+
+        use {
+            "aklt/plantuml-syntax"
         }
 
         -- Install plugins in fresh installment.
