@@ -228,6 +228,8 @@ function M.setup()
                         require("config.test").setup()
                     end
                 },
+                "alfaix/neotest-gtest",
+                "nvim-neotest/nvim-nio",
                 "nvim-lua/plenary.nvim",
                 "nvim-neotest/neotest-vim-test",
                 "nvim-treesitter/nvim-treesitter",

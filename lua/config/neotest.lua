@@ -9,7 +9,8 @@ function M.setup()
             },
             require "neotest-vim-test" {
                 ignore_file_types = { "python" }
-            }
+            },
+            require("neotest-gtest").setup({})
         },
         consumers = {
             overseer = require "neotest.consumers.overseer"
